@@ -1,3 +1,8 @@
+import random
+# ---------------------------------------------------------
+# Vending maschine
+# ---------------------------------------------------------
+
 drinks = {
     "Cola": 150,
     "Pepsi": 200,
@@ -39,7 +44,6 @@ while running:
                 print(f"Es fehlen noch: {(drinks[choice] - sum(paid)) / 100} €")
             coins = input("Bitte werfen Sie Ihre Münzen ein: ").split(",")
             sad = random.randint(0, 10)
-            
             for coin in coins:
                 log["Total Coins"] += 1
                 coin = int(coin)
@@ -55,13 +59,13 @@ while running:
                 elif coin_count > 3:
                     stolen += coin
                     log["Swallowed Coins"] += 3
-                    print("ERROR! Zu viele münzen, upps!")
-                    break 
+                    print("ERROR! Zu viele Münzen!")
+                    coin_count = 0
+                    paid.clear()
+                    break
                 else:
                     paid.append(coin)
                     log["Total Paid"] += sum(paid)
-                    coin_count = 0
-
         else:
             if sum(paid) >= drinks[choice]:
                 print(f"Ihr Wechselgeld beträgt: {(sum(paid) - drinks[choice]) / 100}€")
@@ -70,7 +74,7 @@ while running:
                 unlucky = random.randint(0, 10)
                 if unlucky >= 8:
                     print(f"Verdammt, es scheint als ob die {choice} im Schacht stecken geblieben ist!")
-                    stuck = input("Treten, anrempeln oder weggehen? ")
+                    stuck = input("Treten, anrempeln oder weg gehen? ")
                     if stuck in ["treten", "anrempeln"]:
                         log["You chose violence"] += 1
                         broken = random.randint(0, 10)
@@ -78,20 +82,18 @@ while running:
                             print("BRRZZTTT!!! Die Maschine ist Schrott!")
                         else:
                             print("Glück gehabt! Das Getränk ist herausgefallen!")
-                    elif stuck == "weggehen":
+                    elif stuck == "weg gehen":
                         log["Peaceful"] += 1
                         lucky = random.randint(0, 10)
                         if lucky >= 2:
                             print("Glück gehabt! Das Getränk ist herausgefallen!")
                         else:
                             print("Dann bleibst du wohl durstig")
-                else:
-                    break
                            
-    elif choice.lower == "q":
+    elif choice == "q":
         print("Kein Durst")
         running = False
-    elif choice.lower == "log":
+    elif choice == "Log":
         log["Amount Stolen"] = stolen
         print(log)
     else:
